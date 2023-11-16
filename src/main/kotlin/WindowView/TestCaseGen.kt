@@ -6,6 +6,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material.icons.rounded.Refresh
@@ -20,10 +21,11 @@ import testcaseManagement.*
 
 val sm = ScriptingSetup()
 val gn = GenerationUtils(sm)
+val dp = Dumper()
 
 @Composable
 @Preview
-fun GeneratorWindow(code: MutableState<String>, args: MutableList<generationArg>, amount: MutableState<Int>, showEditor: MutableState<Boolean>) {
+fun GeneratorWindow(code: MutableState<String>, args: MutableList<generationArg>, amount: MutableState<Int>, showEditor: MutableState<Boolean>, casesName: MutableState<String>) {
     MaterialTheme(colors = colors) {
         Column {
             Row(modifier = Modifier.padding(10F.dp)) {
@@ -47,21 +49,29 @@ fun GeneratorWindow(code: MutableState<String>, args: MutableList<generationArg>
                     Icon(imageVector = Icons.Rounded.Refresh, contentDescription = "Test", tint = Color.Gray)
                     Text("Test", color = Color.Gray, modifier = Modifier.padding(1F.dp))
                 }
-
-
             }
 
             Row(modifier = Modifier.padding(10F.dp)) {
                 Button(colors = ButtonDefaults.buttonColors(backgroundColor = Color.Green), modifier = Modifier.padding(Dp(5F)), onClick = {
                     var cases = gn.gen(args = args, amount = amount, code = code)
-                    gn.printAll(cases)
-
+                    dp.dumpCases(cases, casesName.value)
                 }) {
                     Icon(imageVector = Icons.Default.Star, contentDescription = "Generate", tint = Color.Gray)
                     Text("Generate", color = Color.Gray, modifier = Modifier.padding(1F.dp))
                 }
 
+                Button(colors = ButtonDefaults.buttonColors(backgroundColor = Color.Green), modifier = Modifier.padding(Dp(5F)), onClick = {
+                    dp.dumpGenFunc(code.value, casesName.value)
+                }) {
+                    Icon(imageVector = Icons.Default.ShoppingCart, contentDescription = "Dump Func", tint = Color.Gray)
+                    Text("Dump Func", color = Color.Gray, modifier = Modifier.padding(1F.dp))
+                }
+
                 AmountPicker(modifier = Modifier.padding(Dp(5F)), amount = amount)
+            }
+
+            Row {
+                TextField(value = casesName.value, onValueChange = {casesName.value = it}, label = { Text("Dump Name")}, modifier = Modifier.padding(Dp(5F)))
             }
         }
     }

@@ -97,8 +97,9 @@ class ScriptingSetup {
         var string = readLastLine()
         if (string.startsWith("}")) {
             string = "ERROR WHILE FETCHING OUTPUT [NO OUTPUT VALUE WAS SET] [DEBUG YOUR CODE]"
+        } else {
+            delLastLine()
         }
-        delLastLine()
         return string
     }
 

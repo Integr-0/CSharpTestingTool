@@ -9,6 +9,7 @@ import androidx.compose.ui.window.application
 import code.CodeEditor
 import WindowView.GeneratorWindow
 import testcaseManagement.RandomIntValueFromRange
+import testcaseManagement.StringValueFromSet
 import testcaseManagement.generationArg
 
 var colors = Colors(
@@ -35,13 +36,14 @@ var colors = Colors(
 var showEditor = mutableStateOf(false)
 
 var genCode = mutableStateOf("")
+var genCasesDumpName = mutableStateOf("Dump_${System.currentTimeMillis().toInt()}")
 var genAmount = mutableStateOf(0)
-var genArgs: MutableList<generationArg> = mutableListOf(RandomIntValueFromRange(1, 50), RandomIntValueFromRange(50, 70))
+var genArgs: MutableList<generationArg> = mutableListOf(StringValueFromSet(listOf("r", "ö")), RandomIntValueFromRange(1, 2))
 
 fun main() = application {
 
     Window(onCloseRequest = ::exitApplication, title = "Testcase Generator", icon = painterResource("Icon.ico")) {
-        GeneratorWindow(genCode, genArgs, genAmount, showEditor)
+        GeneratorWindow(genCode, genArgs, genAmount, showEditor, genCasesDumpName)
     }
 
     if (showEditor.value) {
