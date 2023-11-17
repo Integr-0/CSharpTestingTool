@@ -8,6 +8,15 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import code.CodeEditor
 import WindowView.GeneratorWindow
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.*
+import androidx.compose.ui.window.rememberWindowState
 import testcaseManagement.RandomIntValueFromRange
 import testcaseManagement.StringValueFromSet
 import testcaseManagement.generationArg
@@ -35,7 +44,16 @@ var colors = Colors(
 
 var showEditor = mutableStateOf(false)
 
-var genCode = mutableStateOf("")
+var showPopup = mutableStateOf(false)
+var popupText = mutableStateOf("")
+
+var genCode = mutableStateOf("var inputs: List<Any> = listOf()\n" +
+        "/* Inputs will be parsed here in order */\n" +
+        "/* Example: input 1 is a string: use * inputs[0] * to reference it */\n" +
+        "/* Write your Evaluation code here */\n" +
+        "/* use Kotlin code */\n" +
+        "/* Output needs to be in a String Variable inside the printOutput function at the end of the document */\n" +
+        "putOutput(\"Output\")\n")
 var genCasesDumpName = mutableStateOf("Dump_${System.currentTimeMillis().toInt()}")
 var genAmount = mutableStateOf(0)
 var genArgs: MutableList<generationArg> = mutableListOf(StringValueFromSet(listOf("r", "ö")), RandomIntValueFromRange(1, 2))
@@ -43,7 +61,7 @@ var genArgs: MutableList<generationArg> = mutableListOf(StringValueFromSet(listO
 fun main() = application {
 
     Window(onCloseRequest = ::exitApplication, title = "Testcase Generator", icon = painterResource("Icon.ico")) {
-        GeneratorWindow(genCode, genArgs, genAmount, showEditor, genCasesDumpName)
+        GeneratorWindow(popupText, showPopup, genCode, genArgs, genAmount, showEditor, genCasesDumpName)
     }
 
     if (showEditor.value) {
@@ -52,4 +70,19 @@ fun main() = application {
         }
     }
 
+    var state = rememberWindowState(size = DpSize(500F.dp, 300F.dp))
+    if (showPopup.value) {
+        Window(state = state, onCloseRequest = {showPopup.value = false}, title = "Info", icon = painterResource("Icon.ico"), resizable = false) {
+            MaterialTheme(colors = colors) {
+                Column(verticalArrangement = Arrangement.Center, modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(popupText.value, textAlign = TextAlign.Center, fontSize = TextUnit(1F, TextUnitType.Em))
+                    Button(onClick = {
+                        showPopup.value = false
+                    }) {
+                        Text("Close")
+                    }
+                }
+            }
+        }
+    }
 }

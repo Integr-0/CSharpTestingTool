@@ -75,8 +75,7 @@ class ScriptingSetup {
         val path = Paths.get("").toAbsolutePath().toString()
         if (Files.exists(Path.of("$path/runtime/execution.kts"))) {
             var lines: MutableList<String> = File("runtime/execution.kts").readLines().toMutableList()
-            var line1 = readFirstLine()
-            line1 = "var inputs: List<Any> = listOf("
+            var line1 = "var inputs: List<Any> = listOf("
             line1 += unifyString(inputs)
             line1 += ")"
             lines[getIndexOfInput(lines)] = line1
