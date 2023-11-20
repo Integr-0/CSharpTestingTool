@@ -20,10 +20,16 @@ class GenerationUtils(val sm: ScriptingSetup) {
         }
     }
 
-    fun test(code: MutableState<String>, args: List<generationArg>) {
+    fun test(code: MutableState<String>, args: List<generationArg>): String {
         sm.genScript(sm.putScript(code.value))
         sm.parseInputs(generateRandomArgSet(args).inputs)
         sm.runScript()
-        println(sm.readOutput())
+        var out = sm.readOutput()
+
+        return if (out != "ERROR WHILE FETCHING OUTPUT [NO OUTPUT VALUE WAS SET] [DEBUG YOUR CODE]") {
+            "TEST SUCCESSFUL [VALUE WAS RETURNED]"
+        } else {
+            out
+        }
     }
 }

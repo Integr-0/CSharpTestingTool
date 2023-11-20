@@ -9,7 +9,11 @@ fun generateAmount(generationArgs: List<generationArg>, amount: Int, code: Mutab
     sm.genScript(sm.putScript(code.value))
     val cases: MutableList<TestCase> = mutableListOf()
     for (num in 0..amount) {
-        cases += generateRandomArgSet(generationArgs)
+        var caseTemp = generateRandomArgSet(generationArgs)
+        cases += caseTemp
+        if (caseTemp.output.startsWith("ERROR WHILE FETCHING OUTPUT [NO OUTPUT VALUE WAS SET] [DEBUG YOUR CODE]")) {
+            break;
+        }
     }
     return cases
 }
@@ -45,5 +49,5 @@ class RandomDoubleValueFromRange(var min: Double, var max: Double) : generationA
 }
 
 class StringValueFromSet(var strings: List<String>) : generationArg() {
-    val value = strings.random()
+    val value = "\""+strings.random()+"\""
 }

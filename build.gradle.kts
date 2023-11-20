@@ -30,6 +30,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
     implementation(kotlin("script-runtime"))
     implementation("com.fifesoft:rsyntaxtextarea:3.1.3")
+    implementation("com.darkrockstudios:mpfilepicker:1.0.0")
 }
 
 compose.desktop {
