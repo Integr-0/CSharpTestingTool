@@ -49,7 +49,7 @@ var popupText = mutableStateOf("")
 
 var genCode = mutableStateOf("var inputs: List<Any> = listOf()\n" +
         "/* Inputs will be parsed here in order */\n" +
-        "/* Example: input 1 is a string: use * inputs[0] * to reference it */\n" +
+        "/* Example: input 1 is a string: use * inputs[0] * to reference it (always type cast)*/\n" +
         "/* Write your Evaluation code here */\n" +
         "/* use Kotlin code */\n" +
         "/* Output needs to be in a String Variable inside the printOutput function at the end of the document */\n" +
